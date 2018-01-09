@@ -1,5 +1,4 @@
 import * as Types from './actionType'
-console.log(Types)
 export default {
 	ADD_GUN:  () => ({
 		type: Types.ADD_GUN,

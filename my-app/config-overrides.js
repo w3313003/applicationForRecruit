@@ -1,6 +1,8 @@
 /* config-overrides.js */
 const tsImportPluginFactory = require('ts-import-plugin')
 const { getLoader } = require("react-app-rewired");
+const { compose } = require('react-app-rewired');
+
 
 module.exports = function override(config, env) {
   const tsLoader = getLoader(
@@ -10,16 +12,15 @@ module.exports = function override(config, env) {
       typeof rule.loader === 'string' &&
       rule.loader.includes('ts-loader')
   );
-
   tsLoader.options = {
     getCustomTransformers: () => ({
       before: [ tsImportPluginFactory({
         libraryName: 'antd-mobile',
         libraryDirectory: 'es',
         style: 'css',
+        loader:'typings-for-css-modules-loader'
       }) ]
     })
   };
-
   return config;
-}
+};

@@ -33,6 +33,7 @@
     "tslint-loader": "^3.5.3",
     "tslint-react": "^3.2.0",
     "typescript": "~2.5.3",
+    "typings-for-css-modules-loader": "^1.7.0",
     "url-loader": "0.5.9",
     "webpack": "3.5.1",
     "webpack-dev-server": "2.7.1",
@@ -53,7 +54,10 @@
     "react-app-rewired": "^1.4.0",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
-    "ts-import-plugin": "^1.4.3"
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "ts-import-plugin": "^1.4.3",
+    "typed-css-modules": "^0.3.1"
   },
   "jest": {
     "mapCoverage": true,
@@ -105,5 +109,6 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  }
+  },
+  "homepage": "./"
 }

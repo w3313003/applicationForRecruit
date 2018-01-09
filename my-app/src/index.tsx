@@ -2,17 +2,28 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import { store } from './App'
+import  { createStore } from 'redux';
+import reducer from './redux/store/index';
+import action from './redux/store/action/action';
+const store = createStore(reducer);
+
+const stateAdd: {} = () => {
+    store.dispatch(action.ADD_GUN());
+};
+const stateDrease: {} = () => {
+    store.dispatch(action.DECREASE_GUN());
+}
 
 const render = () => {
-  console.log(store.getState());
   ReactDOM.render(
-    <App />,
+    <App stateAdd={stateAdd} 
+         stateDrease={stateDrease}
+         store={store.getState()}/>,
     document.getElementById('root') as HTMLElement
   );
 };
 render();
 
-store.subscribe(render)
+store.subscribe(render);
 
 registerServiceWorker();

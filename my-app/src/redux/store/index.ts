@@ -6,12 +6,9 @@ interface ReducerCheck {
 const reducer: ReducerCheck = (state = 0, action) => {
 	switch (action.type) {
 		case ADD_GUN:
-			return Number(state) + 1;
+			return Number(state) + Math.floor(Math.random() * (10 - 1 + 1) + 1);
 		case  DECREASE_GUN:
-			if (state > 1) {
-				return false;
-			}
-			return Number(state) - 1;
+			return Number(state) - Math.floor(Math.random() * (10 - 1 + 1) + 1);
 		default: 	
 			return state;	
 	}
