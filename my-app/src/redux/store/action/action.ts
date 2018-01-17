@@ -1,10 +1,25 @@
-import * as Types from './actionType'
-export default {
-	ADD_GUN:  () => ({
-		type: Types.ADD_GUN,
-		message: '添加机关枪'
+import * as Types from './actionType';
+
+// action generator
+const action: any = {
+	[Types.REGISTER_SUCCESS]: (payload: any) => ({
+		type: Types.REGISTER_SUCCESS,
+		payload
 	}),
-	DECREASE_GUN:  () => ({
+	[Types.ERROR_MSG]: (payload: any) => ({
+		type: Types.ERROR_MSG,
+		payload
+	}),
+	[Types.ADD_GUN]:  () => ({
+		type: Types.ADD_GUN,
+	}),
+	[Types.DECREASE_GUN]:  () => ({
 		type: Types.DECREASE_GUN
+	}),
+	[Types.Async]: (payload: any) => ({
+		type: Types.Async,
+		payload 
 	})
 };
+
+export default action;

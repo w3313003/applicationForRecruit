@@ -1,29 +1,29 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import  { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import reducer from './redux/store/index';
-import action from './redux/store/action/action';
-const store = createStore(reducer);
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
+import { Provider } from 'react-redux';
+import './config.ts';
+import App from './App';
 
-const stateAdd: {} = () => {
-    store.dispatch(action.ADD_GUN());
-};
-const stateDrease: {} = () => {
-    store.dispatch(action.DECREASE_GUN());
+const ENV = process.env.NODE_ENV !== 'production';
+declare global {
+	interface Window {
+		[property: string]: any;
+	}
 }
-
-const render = () => {
-  ReactDOM.render(
-    <App stateAdd={stateAdd} 
-         stateDrease={stateDrease}
-         store={store.getState()}/>,
-    document.getElementById('root') as HTMLElement
-  );
-};
-render();
-
-store.subscribe(render);
-
+const reduxDevTools = window.devToolsExtension ? window.devToolsExtension : (f: any) => f;
+const store = createStore(
+	reducer,
+	ENV ? compose(applyMiddleware(thunk, logger), reduxDevTools()) : compose(applyMiddleware(thunk, logger))
+);
+ReactDOM.render(
+	<Provider store={store}>
+		<App />
+	</Provider>,
+	document.getElementById('root') as HTMLElement
+);
 registerServiceWorker();

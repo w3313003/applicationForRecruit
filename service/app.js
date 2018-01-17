@@ -7,25 +7,19 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var app = express();
-
-const mongo = require('mongoose');
-const DB_URL = 'mongodb://127.0.0.1:27017/react';
-mongo.connect(DB_URL);
-mongo.connection.on('connected',() => {
-    console.log('okkkkkkk')
-})
+require('./model/index');
 
 //  类似mysql表  mogngo中的的字段  文档
-const User = mongo.model('user',new mongo.Schema({
-    user:{
-        type: String,
-        require: true
-    },
-    age: {
-        type: Number,
-        require: true
-    }
-}));
+// const User = mongo.model('user',new mongo.Schema({
+//     user:{
+//         type: String,
+//         require: true
+//     },
+//     age: {
+//         type: Number,
+//         require: true
+//     }
+// }));
 
 // User.update({user:'zj'}, {$set:{age:99}},(err,doc) => {
 //     if(!err) {
@@ -40,13 +34,23 @@ const User = mongo.model('user',new mongo.Schema({
 //     if(!err) {
 //         console.log(doc);
 //     }
+// });
+
+// app.get('/data', (req,res) => {
+//     User.findOne({user:'zj'},(err,doc) => {
+//         res.send(doc)
+//     })
 // })
 
-app.get('/data', (req,res) => {
-    User.findOne({user:'zj'},(err,doc) => {
-        res.send(doc)
-    })
-})
+
+// 跨域配置
+// app.all('*', function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Credentials', 'true')
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+//   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+//   if (req.method == 'OPTIONS') { res.send(200); /让options请求快速返回/ } else { next(); }
+// });
 
 
 // view engine setup
@@ -59,6 +63,7 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -67,19 +72,12 @@ app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
-// 跨域配置
-app.all('*', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Credentials', 'true')
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
-  res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-  if (req.method == 'OPTIONS') { res.send(200); /让options请求快速返回/ } else { next(); }
-});
+
 
 
 // error handler

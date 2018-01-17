@@ -1,52 +1,45 @@
 import * as React from 'react';
-import { Button } from 'antd-mobile';
-import * as  stylus from  './s.styl';
-import 'antd-mobile/dist/antd-mobile.css'
-console.log(stylus)
+import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
+import { Login } from './components/login/login';
+import { Register } from './components/register/register';
+import Auth from './common/auth';
 
-interface UiP {
-  name: string,
-  children?: {}
-}
+// import { connect } from 'react-redux';
+// import action from './redux/store/action/action';
+// import { ADD_GUN, DECREASE_GUN, Async } from './redux/store/action/actionType';
+import './App.css';
+// import { ADD_GUN, DECREASE_GUN, Async } from './redux/store/action/actionType'
+// import axios from 'axios';
+// const mapStateToProps = (state: any) => {
+//   return {
+//     num: state.AppReducer.num
+//   };
+// };
+// const mapDispatchToProps = (dispatch: any) => {
+//   return {
+//     [ADD_GUN]: () => dispatch(action.ADD_GUN()),
+//     [DECREASE_GUN]: () => dispatch(action.DECREASE_GUN()),
+//     [Async]: (payload: any) => {
+//       axios.get('/ddd').then(res => {
+//         dispatch(action.Async(res.data));
+//       });
+//     }
+//   };
+// };
 
-class Ui extends React.Component<UiP> {
-    constructor(props: any) {
-      super(props)
-    }
-    render() {
-      return (
-        <div>
-            name:{this.props.name}
-            {this.props.children}
-        </div>
-      )
-    }
-}
-
-interface Props {
-  store: any,
-  stateAdd?: any,
-  stateDrease?: any
-}
-
-class App extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
+// let connects: any = connect;
+// @connects(mapStateToProps, mapDispatchToProps);
+class App extends React.Component {
   render() {
     return (
-      <div>
-        <Ui name="zj">
-            <h4>Hello,world</h4>
-        </Ui>
-        <h1>
-          现在有机枪{this.props.store}把
-        </h1>
-            <Button onClick={() => this.props.stateAdd()} type="primary" size='small'>添加武器</Button>
-            <div className='app'>
-                <Button onClick={() => this.props.stateDrease()} type='warning' size='large'>撤回武器</Button>
-            </div>
-      </div>
+        <Router>
+          <div>
+            <Auth/>
+            <Route exact={true} path="/" render={() => <Redirect to="/login"/>} />
+            <Route path="/login" exact={true} component={Login}/>
+            <Route path="/register" component={Register}/>
+          </div>
+        </Router>
     );
   }
 }

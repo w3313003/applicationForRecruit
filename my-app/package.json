@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/react-redux": "^5.0.14",
     "antd": "^3.1.0",
     "antd-mobile": "^2.1.3",
     "autoprefixer": "7.1.2",
@@ -47,17 +48,24 @@
   },
   "devDependencies": {
     "@types/jest": "^22.0.1",
+    "@types/history": "^4.6.2",
     "@types/node": "^8.5.7",
     "@types/react": "^16.0.34",
     "@types/react-dom": "^16.0.3",
+    "@types/react-router-dom": "^4.2.3",
+    "axios": "^0.17.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "better-scroll": "^1.7.2",
     "react-app-rewired": "^1.4.0",
     "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.2.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
-    "ts-import-plugin": "^1.4.3",
-    "typed-css-modules": "^0.3.1"
+    "ts-import-plugin": "^1.4.3"
   },
   "jest": {
     "mapCoverage": true,
@@ -105,10 +113,14 @@
   "babel": {
     "presets": [
       "react-app"
+    ],
+    "plugins": [
+      "transform-decorators-legacy"
     ]
   },
   "eslintConfig": {
     "extends": "react-app"
   },
+  "proxy": "http://127.0.0.1:6060",
   "homepage": "./"
 }
