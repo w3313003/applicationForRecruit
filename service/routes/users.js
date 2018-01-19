@@ -28,6 +28,26 @@ router.post('/Info',(req, res, next) => {
   });
 });
 
+router.post('/login', (req, res, next) => {
+    const { userName, password } = req.body;
+    console.log(userName, md5Psd(password));
+    Usermodels.findOne({userName, password: md5Psd(password)}, (err, doc) => {
+      if(err) return ;
+      if(!doc) {
+        return res.send({
+            code: 1,
+            msg: '用户名或密码啊不存在'
+        }) 
+      } else {
+        res.send({
+          code: 0,
+          msg: '登陆成功',
+          data: doc
+        })
+      }
+    })
+})
+
 router.post('/register', (req, res, next) => {
     const { userName, password, cPassword, type }  = req.body;
     console.log(userName); 
@@ -52,7 +72,8 @@ router.post('/register', (req, res, next) => {
 })
 function md5Psd(password) {
   // 加盐 salt
-  return utility.md5(utility.md5(password + Math.random().toString(16).slice(2)));
+  let salt = 'sA.w%321sa1_%!?=^&@323!~';
+  return utility.md5(utility.md5(password + salt));
 }
 
 module.exports = router;

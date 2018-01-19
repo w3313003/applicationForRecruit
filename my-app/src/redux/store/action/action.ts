@@ -10,6 +10,10 @@ const action: any = {
 		type: Types.ERROR_MSG,
 		payload
 	}),
+	[Types.LOGIN_SUCCESS]: (payload: any) => ({
+		type: Types.LOGIN_SUCCESS,
+		payload
+	}),
 	[Types.ADD_GUN]:  () => ({
 		type: Types.ADD_GUN,
 	}),

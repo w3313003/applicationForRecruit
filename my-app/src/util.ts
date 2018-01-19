@@ -7,4 +7,4 @@ export function getRedirectPath({type, avatar}: any) {
 		url += 'Info';
 	}
 	return url;
-} 
+}

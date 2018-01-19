@@ -4,4 +4,10 @@ for (let i = 0; i < 10001; i++) {
 		j == 0 ? count++ : '' 
 	};
 };
-console.log(count)
+console.log(count);
+let obj = {
+	a: [1,23,4],
+	b: [2,3,4]
+}
+let arr = Object.values(obj);
+console.log(arr)

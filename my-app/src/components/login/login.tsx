@@ -1,7 +1,11 @@
 import * as React from 'react';
+import { Redirect } from 'react-router-dom';
 import { List, Button, InputItem, WingBlank, WhiteSpace } from 'antd-mobile';
+import axios from 'axios';
 import * as css from './login.styl';
 import Logo from '../../common/logo/logo';
+import { connect } from 'react-redux';
+import action from '../../redux/store/action/action';
 interface CssStyle {
 	[property: string]: any;
 }
@@ -9,8 +13,25 @@ const style: CssStyle = css;
 
 interface ForProps {
 	history: any;
+	login: Function;
+	redirectTo: string;
 }
+const mapPropsTostate = (dispatch: any) => {
+	return {
+		login (data: {}) {
+			axios.post('/users/login', data).then(res => {
+				if (res.data.code === 0) {
+					dispatch(action.LOGIN_SUCCESS(res.data.data));
+				}
+			});
+		}
+	};
+};
 
+@(connect as any)(
+	(state: any) => state.signReducer,
+	mapPropsTostate
+)
 export class Login extends React.Component<ForProps, {}> {
 	public state: {
 		userName: string,
@@ -32,12 +53,18 @@ export class Login extends React.Component<ForProps, {}> {
 		});
 	}
 	toLogin = () => {
-		console.log(this.state);
+		let { userName, password } = this.state,
+			data = {
+				userName,
+				password
+			};
+		this.props.login(data);
 	}
 	render() {
 		return (
 			<div>
 				<Logo/>
+				{this.props.redirectTo ? <Redirect to={this.props.redirectTo}/> : null}
 				<WingBlank>
 					<List>
 						<InputItem 
@@ -60,6 +87,7 @@ export class Login extends React.Component<ForProps, {}> {
 						<WhiteSpace/>
 						<Button type="warning" onClick={this.toRegister}>注册</Button>
 					</div>
+					
 				</WingBlank>
 			</div>
 		);

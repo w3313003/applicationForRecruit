@@ -10,27 +10,38 @@ const css: any = style;
 const RadioItem = Radio.RadioItem;
 interface InspectProps {
 	toRegister: (data: {}) => any;
-	redirect: string;
+	redirectTo: string;
 }
-const mapStateToProps = (state: any) => {
-	return {
-		isAuth: state.signReducer.isAuth,
-		redirect: state.signReducer.redirectTo
-	};
-};
+// const mapStateToProps = (state: any) => {
+// 	return {
+// 		isAuth: state.signReducer.isAuth,
+// 		redirect: state.signReducer.redirectTo
+// 	};
+// };
 const mapDispatchToProps = (dispatch: any) => {
 	return {
-		toRegister: (data: {}) => {
+		toRegister(data: {})  {
 			axios.post('/users/register', data).then(res => {
 				if (res.status === 200 && res.data.code === 0) {
 					dispatch(action.REGISTER_SUCCESS(data));
 				} else if ( res.data.msg = 'Duplicate username') {
 					Toast.fail('用户名已被注册');
+					dispatch(action.ERROR_MSG(data));
 				}
 			});
 		}
 	};
 };
+function Test(props: any) {
+	console.log(props);
+	return (
+		<div>
+			hello;
+			{props.isAuth.toString()}
+		</div>
+	);
+}
+
 /**
  * 注册组件
  * @export
@@ -39,7 +50,9 @@ const mapDispatchToProps = (dispatch: any) => {
  * @connect 装饰器 连接state和props
  * @genericType <InspectProps>
  */
-@(connect as any)(mapStateToProps, mapDispatchToProps)
+@(connect as any)(
+(state: any) => state.signReducer,
+mapDispatchToProps)
 export class Register extends React.Component<InspectProps> {
 	public state: {
 		option: object[];
@@ -96,10 +109,12 @@ export class Register extends React.Component<InspectProps> {
 		return;
 	} 
 	render() {
+		console.log(this.props);
 		return (
 			<div className={css.wrap}>
-				{this.props.redirect ? <Redirect to={this.props.redirect}/> : null}
+				{this.props.redirectTo ? <Redirect to={this.props.redirectTo}/> : null}
 				<Logo/>	
+				<Test {...this.props}/>
 				<WhiteSpace/>
 				<List>
 					<InputItem
