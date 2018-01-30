@@ -6,24 +6,14 @@ import { Button, WhiteSpace, List, InputItem, Radio, Toast } from 'antd-mobile';
 import Logo from '../../common/logo/logo';
 import * as style from './register.styl';
 import { Redirect } from 'react-router-dom';
+import { HOCfrom } from '../../common/formComponent';
 const css: any = style;
-const RadioItem = Radio.RadioItem;
-interface InspectProps {
-	toRegister: (data: {}) => any;
-	redirectTo: string;
-}
-// const mapStateToProps = (state: any) => {
-// 	return {
-// 		isAuth: state.signReducer.isAuth,
-// 		redirect: state.signReducer.redirectTo
-// 	};
-// };
 const mapDispatchToProps = (dispatch: any) => {
 	return {
 		toRegister(data: {})  {
 			axios.post('/users/register', data).then(res => {
 				if (res.status === 200 && res.data.code === 0) {
-					dispatch(action.REGISTER_SUCCESS(data));
+					dispatch(action.AUTH_SUCCESS(data));
 				} else if ( res.data.msg = 'Duplicate username') {
 					Toast.fail('用户名已被注册');
 					dispatch(action.ERROR_MSG(data));
@@ -32,16 +22,6 @@ const mapDispatchToProps = (dispatch: any) => {
 		}
 	};
 };
-function Test(props: any) {
-	console.log(props);
-	return (
-		<div>
-			hello;
-			{props.isAuth.toString()}
-		</div>
-	);
-}
-
 /**
  * 注册组件
  * @export
@@ -51,59 +31,28 @@ function Test(props: any) {
  * @genericType <InspectProps>
  */
 @(connect as any)(
-(state: any) => state.signReducer,
-mapDispatchToProps)
-export class Register extends React.Component<InspectProps> {
-	public state: {
-		option: object[];
-		currentIdentity: string;
-		userName: string;
-		password: string;
-		cPassword: string;
-	};
+	(state: any) => state.signReducer,
+	mapDispatchToProps
+)
+@(HOCfrom as any)
+export class Register extends React.Component<any> {
 	constructor (props: any) {
 		super(props);
-		this.state = {
-			currentIdentity: 'genius',
-			userName: '',
-			password: '',
-			cPassword: '',
-			option: [
-				{
-					type: 'genius',
-					title: '牛人',
-				},
-				{
-					type: 'boss',
-					title: 'BOSS'
-				}
-			]
-		};
-	}
-	identityToggle = (identity: any) => {
-		this.setState({
-			currentIdentity: identity
-		});
-	}
-	handleChange(key: string, val: string | number) {
-		this.setState({
-			[key]: val
-		});
 	}
 	register = (): boolean | void => {
-		if (this.state.userName.length < 5) {
+		if (this.props.userName.length < 5) {
 			Toast.fail('用户名最少需要五个字符', 2);
 			return false;
 		}
-		if (this.state.password !== this.state.cPassword) {
+		if (this.props.password !== this.props.cPassword) {
 			Toast.fail('两次输入的密码不一致', 2);
 			return false;
 		}
 		let data = {
-			userName: this.state.userName,
-			password: this.state.password,
-			cPassword: this.state.cPassword,
-			type: this.state.currentIdentity
+			userName: this.props.userName,
+			password: this.props.password,
+			cPassword: this.props.cPassword,
+			type: this.props.currentIdentity
 		};
 		this.props.toRegister(data);
 		return;
@@ -114,36 +63,35 @@ export class Register extends React.Component<InspectProps> {
 			<div className={css.wrap}>
 				{this.props.redirectTo ? <Redirect to={this.props.redirectTo}/> : null}
 				<Logo/>	
-				<Test {...this.props}/>
 				<WhiteSpace/>
 				<List>
 					<InputItem
-						onChange={(v: string) => {this.handleChange('userName', v); }} 
+						onChange={(v: string) => {this.props.handleChange('userName', v); }} 
 						placeholder="请输入用户名"
 					>用户名
 					</InputItem>
 					<InputItem 
 						type="password" 
 						placeholder="请输入密码"
-						onChange={(v: string) => {this.handleChange('password', v); }} 
+						onChange={(v: string) => {this.props.handleChange('password', v); }} 
 					>密码
 					</InputItem>
 					<InputItem 
 						type="password" 
 						placeholder="再次输入密码"
-						onChange={(v: any) => {this.handleChange('cPassword', v); }}
+						onChange={(v: any) => {this.props.handleChange('cPassword', v); }}
 					>确认密码
 					</InputItem>
 				</List>
-				{this.state.option.map((v: any, i) => {
+				{this.props.state.option.map((v: any, i: number) => {
 					return (
-						<RadioItem 
+						<Radio.RadioItem 
 							key={i} 
-							onClick={(identity: string) => { this.identityToggle(v.type); }} 
-							checked={this.state.currentIdentity === v.type}
+							onClick={(identity: string) => { this.props.identityToggle(v.type); }} 
+							checked={this.props.state.currentIdentity === v.type}
 						>
 							{v.title}
-						</RadioItem>
+						</Radio.RadioItem>
 					);
 				})}
 				<WhiteSpace/>

@@ -8,7 +8,6 @@ import logger from 'redux-logger';
 import { Provider } from 'react-redux';
 import './config.ts';
 import App from './App';
-
 const ENV = process.env.NODE_ENV !== 'production';
 declare global {
 	interface Window {

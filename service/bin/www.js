@@ -6,20 +6,42 @@
 
 var app = require('../app');
 var debug = require('debug')('zpservice:server');
-var http = require('http');
+
+
+const DBdata = require("../model/index");
+const Usermodels = DBdata.getModels("user");
+const Chatmodels = DBdata.getModels('chat');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '6060');
+const port = normalizePort(process.env.PORT || '6060');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+
+io.on('connection', socket => {
+  socket.on('sendMsg', data => {
+    console.log(data);
+    const { from, to, msg } = data,
+      chatId = [from, to].sort().join('_');
+    Chatmodels.create({ from, to, content: msg, chatId, create_time: new Date().toLocaleString() }, (err, doc) => {
+      if(err) {
+        console.log(err);
+        return;
+      }
+      io.emit('receiveMsg', Object.assign({}, doc._doc));
+    }) 
+  })
+})
+
+
 
 /**
  * Listen on provided port, on all network interfaces.

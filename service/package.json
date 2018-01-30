@@ -10,10 +10,12 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
     "jade": "~1.11.0",
     "lodash": "^4.17.4",
     "morgan": "~1.9.0",
     "serve-favicon": "~2.4.5",
+    "socket.io": "^2.0.4",
     "utility": "^1.13.1"
   },
   "devDependencies": {
