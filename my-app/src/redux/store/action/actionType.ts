@@ -18,5 +18,6 @@ export const LOGOUT = 'LOGOUT';
 export const GET_CHAT_MESSAGE_LIST = 'GET_CHAT_MESSAGE_LIST';
 // 读取聊天信息
 export const GET_MSG_RECEIVE = 'GET_MSG_RECEIVE';
+export const GET_UN_READ = 'GET_UN_READ';
 // 标识是否已读
 export const IS_READ = 'IS_READ';

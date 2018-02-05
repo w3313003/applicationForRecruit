@@ -28,12 +28,10 @@ const io = require('socket.io')(server);
 
 io.on('connection', socket => {
   socket.on('sendMsg', data => {
-    console.log(data);
     const { from, to, msg } = data,
       chatId = [from, to].sort().join('_');
     Chatmodels.create({ from, to, content: msg, chatId, create_time: new Date().toLocaleString() }, (err, doc) => {
       if(err) {
-        console.log(err);
         return;
       }
       io.emit('receiveMsg', Object.assign({}, doc._doc));

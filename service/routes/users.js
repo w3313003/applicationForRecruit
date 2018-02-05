@@ -57,7 +57,6 @@ router.post("/login", (req, res, next) => {
     (err, doc) => {
       if (err) return;
       if (!doc) {
-        console.log("error");
         return res.send({
           code: 1,
           msg: "用户名或密码啊不存在"
@@ -76,7 +75,6 @@ router.post("/login", (req, res, next) => {
 
 router.post("/register", (req, res, next) => {
   const { userName, password, cPassword, type } = req.body;
-  console.log(userName);
   Usermodels.findOne({ userName }, (err, doc) => {
     if (doc) {
       return res.json({
@@ -97,7 +95,6 @@ router.post("/register", (req, res, next) => {
         }
         const { userName, type, _id } = d;
         req.session.userid = _id;
-        console.log("session成功记录");
         return res.json({
           code: 0,
           msg: "Register success!",
@@ -133,11 +130,11 @@ router.delete("/", (req, res, next) => {
   });
 });
 
-router.get("/getmsglist", (req, res, next) => {
+router.post("/getmsglist", (req, res, next) => {
   const userId = req.session.userid;
-  console.log(userId);
-  // const chatId = [userId, req.body.chatUserId].sort().join('_');
-  Usermodels.find({}, (e, d) => {
+  const chatId = [userId, req.body.targetId].sort().join('_');
+  console.log(chatId);
+  Usermodels.find({_id: req.body.targetId}, (e, d) => {
     let users = {};
     d.forEach(v => {
       users[v._id] = {
@@ -146,8 +143,11 @@ router.get("/getmsglist", (req, res, next) => {
       };
     });
     Chatmodels.find(
+      // {
+      //   $or: [{from: userId} , {to: userId}]
+      // },
       {
-        $or: [{from: userId} , {to: userId}]
+        chatId:chatId
       },
       (err, doc) => {
         if (err) {
@@ -164,7 +164,53 @@ router.get("/getmsglist", (req, res, next) => {
     );
   });
 });
-
+router.get('/getMyChat', (req, res, next) => {
+    const userId = req.session.userid;
+    Chatmodels.find(
+      {
+        $or:[{from: userId},{to: userId}]
+      },
+      (err, doc) => {
+        if(err) return;
+        return res.send({
+          code: 0,
+          data: doc
+        })
+      }
+    )
+});
+router.post('/readMsg', (req, res, next) => {
+    const userId = req.session.userid,
+        targetId = req.body.targetId,
+      chatId = [userId, targetId].sort().join('_');
+    Chatmodels.update(
+    {chatId}, 
+    {'$set': {isRead: true}}, 
+    {'multi': true},
+    (err, doc) => {
+      if(err) {
+        return res.send({
+          code: 1,
+          msg: '修改失败',
+        })
+      };
+      return res.send({
+        code: 0,
+        data: doc.nModified
+      })
+    })
+})
+router.get('/getUnRead', (req, res, next) => {
+    const userId = req.session.userid;
+    Chatmodels.find({to: userId, isRead: false}, (err, doc) => {
+        if(!err) {
+          return res.send({
+            code: 0,
+            data: doc
+          });
+        }
+    })
+});
 function md5Psd(password) {
   let salt = "sA.w%321sa1_%!?=^&@323!~";
   return utility.md5(utility.md5(password + salt));

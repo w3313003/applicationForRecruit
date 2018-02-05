@@ -14,7 +14,6 @@ export default class NavLinkBar extends React.Component<PropsType & any> {
 	constructor(props: PropsType) {
 		super(props);
 	}
-
 	render() {
 		const navList = this.props.data.filter((v: any) => !v.hide);
 		const pathName = this.props.location.pathname;
@@ -32,7 +31,7 @@ export default class NavLinkBar extends React.Component<PropsType & any> {
 									onPress={() => this.props.history.push(v.path)}
 								/>
 							);
-					})}
+						})}
 				</TabBar>
 		);
 	}

@@ -40,19 +40,20 @@ export class Register extends React.Component<any> {
 		super(props);
 	}
 	register = (): boolean | void => {
-		if (this.props.userName.length < 5) {
+		if (this.props.state.userName.length < 5) {
 			Toast.fail('用户名最少需要五个字符', 2);
 			return false;
 		}
-		if (this.props.password !== this.props.cPassword) {
+		if (this.props.state.password !== this.props.state.cPassword) {
 			Toast.fail('两次输入的密码不一致', 2);
 			return false;
 		}
+		const {userName, cPassword, password } = this.props.state;
 		let data = {
-			userName: this.props.userName,
-			password: this.props.password,
-			cPassword: this.props.cPassword,
-			type: this.props.currentIdentity
+			userName,
+			password,
+			cPassword,
+			type: this.props.state.currentIdentity
 		};
 		this.props.toRegister(data);
 		return;

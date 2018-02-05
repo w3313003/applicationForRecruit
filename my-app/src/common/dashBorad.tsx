@@ -6,46 +6,34 @@ import { NavBar } from 'antd-mobile';
 import { connect } from 'react-redux';
 import Boss from '../components/Boss'; 
 import Genius from '../components/Genius';
+import Msg from '../components/message';
 import NavLinkBar from './NavLinkBar';
 import UserCenter from '../components/UserCenter'; 
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 import * as style from './common.styl';
 const css: any = style;
-const socket = io('ws://127.0.0.1:6060');
+// const socket = io('ws://127.0.0.1:6060');
 
-const mapDispatchToState = (dispatch: any) => {
+const mapDispatchToState = (dispatch: any, getState: any) => {
 	return {
-		getMsgList() {
-			return axios.get('/users/getmsglist').then(res => {
-				if (res.data.code === 0 && res.status === 200) {
-					dispatch(action.GET_CHAT_MESSAGE_LIST(res.data.data));
-				}
-			});
-		},
-		receiveMsg() {
-			return socket.on('receiveMsg', (data: any) => {
-				console.log(data);
-				dispatch(action.GET_MSG_RECEIVE(data));
-			});
+		getUnReadNum() {
+			return axios.get('/users/getUnRead').then(res => {
+				dispatch(action.GET_UN_READ(res.data.data.length));
+			});	
 		}
 	};
 };
-
-function Msg() {
-	return <div>MSG</div>;
-}
 @(connect as any)(
 	(state: any) => state.signReducer,
 	mapDispatchToState 
-) 
+)
 export default class DashBorad extends React.Component<any> {
 	constructor(props: any) {
 		super(props);
 	}
 	componentDidMount() {
-		this.props.getMsgList();
-		this.props.receiveMsg();
+		this.props.getUnReadNum();
 	}
 	render() {
 		const NavList = [

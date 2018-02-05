@@ -37,7 +37,7 @@ export function HOCfrom(Comp: any) {
 				currentIdentity: 'genius',
 			};
 		}
-		handleChange = (key: string, val: string) => {
+		handleChange = (key: string, val: string) => {			
 			this.setState({
 				[key]: val
 			});

@@ -37,6 +37,10 @@ const action: any = {
 		type: Types.GET_MSG_RECEIVE,
 		payload
 	}),
+	[Types.GET_UN_READ]: (payload: any) => ({
+		type: Types.GET_UN_READ,
+		payload
+	}),
 	[Types.IS_READ]: () => ({
 		type: Types.IS_READ
 	}),
