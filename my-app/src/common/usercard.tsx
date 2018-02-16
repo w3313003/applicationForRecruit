@@ -29,7 +29,7 @@ export default class UserCarf extends React.Component<PropsInspect.RouterProps &
                 			<Card.Body>
 								{v.type === 'boss' ? <div>公司：{v.company}</div> : null}
 								{v.requirement.split('\n').map((w: string, index: number) => {
-									return <div key={index}>{index === 0 && <span>岗位要求:</span>}{w}</div>;
+									return <div key={index}>{index === 0 && <span>牛人简介:</span>}{w}</div>;
 								})}
 								{v.type === 'boss' ? (<div>待遇：{v.salary}</div>) : null}
                 			</Card.Body>

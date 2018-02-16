@@ -60,6 +60,9 @@ export default class Msg extends React.Component<any> {
 						});
 						const unReadNum = v.filter((d: any) => !d.isRead && d.to === userId).length;
 						console.log(target);
+						if (!target) {
+							return null;  
+						}
 						return( 
 							<List.Item
 								key={i}

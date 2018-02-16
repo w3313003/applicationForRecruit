@@ -68,10 +68,12 @@ export default class Chat extends React.Component<PropsInspect.RouterProps & any
 		console.log(this.refs.content, new Date().toLocaleString());
 	}
 	componentDidUpdate() {
-		console.log(this.div);
 		setTimeout(
 			() => {
-				this.div.scrollTop = 9999999;
+				if (!this.div) {
+					return null; 
+				}
+				return this.div.scrollTop = 9999999;
 			},
 			10
 		);
